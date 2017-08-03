@@ -8,5 +8,5 @@ launch the image :
 docker run -p 8080:8983 kgaut/docker-solr-multicore
 ```
 
-More information in french : https://kgaut.net/journal/2017/docker-image-pour-solr-avec-plusieurs-core.html
+More information in french : [https://kgaut.net/journal/2017/docker-image-pour-solr-avec-plusieurs-core.html](https://kgaut.net/journal/2017/docker-image-pour-solr-avec-plusieurs-core.html?utm_source=github&utm_medium=link-readme&utm_campaign=github-docker-solr-multicore)
 
