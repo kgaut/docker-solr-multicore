@@ -58,15 +58,16 @@ RUN mkdir -p /opt/solr/server/solr/collection1/conf && \
     mkdir -p /opt/solr/server/solr/collection1/data && \
     cd /tmp/solr-drupal-config && cp -f * /opt/solr/server/solr/collection1/conf/
 
-COPY ./core1.properties /tmp/core1.properties
-RUN cp -f /tmp/core1.properties /opt/solr/server/solr/collection1/core1.properties
-
 RUN mkdir -p /opt/solr/server/solr/collection2/conf && \
     mkdir -p /opt/solr/server/solr/collection2/data && \
     cd /tmp/solr-drupal-config && cp -f * /opt/solr/server/solr/collection2/conf/
 
+COPY ./core1.properties /tmp/core1.properties
+RUN cp -f /tmp/core1.properties /opt/solr/server/solr/collection1/core.properties
+
 COPY ./core2.properties /tmp/core2.properties
-RUN cp -f /tmp/core2.properties /opt/solr/server/solr/collection1/core2.properties
+RUN cp -f /tmp/core2.properties /opt/solr/server/solr/collection2/core.properties
+
 
 RUN chown -R solr:solr /opt/solr/server/solr
 RUN chmod +x /opt/docker-solr/scripts/*
