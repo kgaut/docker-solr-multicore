@@ -8,6 +8,7 @@ RUN apt-get update && \
 
 ENV SOLR_USER solr
 ENV SOLR_UID 8983
+env NB_CONTAINER 4
 
 RUN groupadd -r -g $SOLR_UID $SOLR_USER && \
   useradd -r -u $SOLR_UID -G $SOLR_USER -g $SOLR_USER $SOLR_USER
@@ -54,20 +55,19 @@ ENV PATH /opt/solr/bin:/opt/docker-solr/scripts:$PATH
 
 COPY ./config /tmp/solr-drupal-config
 
-RUN mkdir -p /opt/solr/server/solr/collection1/conf && \
-    mkdir -p /opt/solr/server/solr/collection1/data && \
-    cd /tmp/solr-drupal-config && cp -f * /opt/solr/server/solr/collection1/conf/
+RUN echo "Creation des $NB_CONTAINER containers"
 
-RUN mkdir -p /opt/solr/server/solr/collection2/conf && \
-    mkdir -p /opt/solr/server/solr/collection2/data && \
-    cd /tmp/solr-drupal-config && cp -f * /opt/solr/server/solr/collection2/conf/
-
-COPY ./core1.properties /tmp/core1.properties
-RUN cp -f /tmp/core1.properties /opt/solr/server/solr/collection1/core.properties
-
-COPY ./core2.properties /tmp/core2.properties
-RUN cp -f /tmp/core2.properties /opt/solr/server/solr/collection2/core.properties
-
+RUN set -e; \
+  while [ $NB_CONTAINER -gt 0 ]; \
+  do \
+    mkdir -p "/opt/solr/server/solr/collection$NB_CONTAINER"; \
+    mkdir -p "/opt/solr/server/solr/collection$NB_CONTAINER/conf"; \
+    mkdir -p "/opt/solr/server/solr/collection$NB_CONTAINER/data"; \
+    cd /tmp/solr-drupal-config && cp -f * "/opt/solr/server/solr/collection$NB_CONTAINER/conf/"; \
+    echo "name=collection$NB_CONTAINER" > "/opt/solr/server/solr/collection$NB_CONTAINER/core.properties"; \
+   NB_CONTAINER=$(( $NB_CONTAINER - 1 )); \
+  done; \
+  exit 0
 
 RUN chown -R solr:solr /opt/solr/server/solr
 RUN chmod +x /opt/docker-solr/scripts/*
