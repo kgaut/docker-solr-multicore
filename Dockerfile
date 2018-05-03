@@ -3,7 +3,7 @@ FROM    openjdk:8-jre
 ARG SOLR_DOWNLOAD_SERVER
 
 RUN apt-get update && \
-  apt-get -y install lsof && \
+  apt-get -y install lsof vim && \
   rm -rf /var/lib/apt/lists/*
 
 ENV SOLR_USER solr
